@@ -23,8 +23,14 @@ class ChannelRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-            'name' => [ 'required' , 'string' , 'min:3' , 'max:190' ]
+        $rules = [
+            'name' => ['required', 'string', 'min:3', 'max:190']
         ];
+
+        if (request()->method == 'PATCH') {
+            $rules += ['id' => ['required']];
+        }
+
+        return $rules;
     }
 }

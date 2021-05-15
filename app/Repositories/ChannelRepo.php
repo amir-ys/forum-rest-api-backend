@@ -23,4 +23,16 @@ class ChannelRepo
             'slug' => Str::slug($request->name)
         ]);
     }
+
+    public function findById($id)
+    {
+        return Channel::findOrFail($id);
+    }
+
+    public function update($request)
+    {
+        return $this->findById($request->id)->update([
+            'name' => $request->name
+        ]);
+    }
 }
