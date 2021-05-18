@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Channel;
+namespace Tests\Feature\API\v1\Channel;
 
 use App\Models\Channel;
 use Illuminate\Http\Response;

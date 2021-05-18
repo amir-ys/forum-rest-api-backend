@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Auth;
+namespace Tests\Feature\API\v1\Auth;
 
 use Tests\TestCase;
 use App\Models\User;
@@ -29,6 +29,7 @@ class LoginTest extends TestCase
 
     public function test_logged_in_user_can_logout()
     {
+        $this->withoutExceptionHandling();
         $this->actingAs($this->createUser());
         $this->postJson(route('logout'))->assertStatus(200);
     }

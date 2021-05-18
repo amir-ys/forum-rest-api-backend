@@ -1,8 +1,8 @@
 <?php
 
+use App\Http\Controllers\API\v1\Auth\AuthController;
+use App\Http\Controllers\API\v1\Channels\ChannelController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\API\V01\Auth\AuthController;
-use App\Http\Controllers\API\V01\Channels\ChannelController;
 
 route::prefix('v1')->group(function () {
 

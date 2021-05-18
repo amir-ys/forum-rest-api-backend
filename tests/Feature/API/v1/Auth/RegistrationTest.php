@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Auth;
+namespace Tests\Feature\API\v1\Auth;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -16,7 +16,6 @@ class RegistrationTest extends TestCase
 
     public function test_new_user_can_register()
     {
-        $this->withoutExceptionHandling();
        $response =  $this->postJson(route('register'), [
             'name' => 'amir-ys',
             'email' => 'amiryou74@gmail.com',
