@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API\v1\Channels;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Channel\ChannelRequest;
 use App\Http\Requests\Channel\DeleteChannelRequest;
+use App\Models\Permission;
 use App\Repositories\ChannelRepo;
 use Illuminate\Http\Response;
 
@@ -15,6 +16,10 @@ class ChannelController extends Controller
     public function __construct(ChannelRepo $channelRepo)
     {
         $this->channelRepo = $channelRepo;
+
+        $this->middleware(['can:' . Permission::PERMISSION_MANAGE_CHANNELS])->only('store');
+        $this->middleware(['can:' . Permission::PERMISSION_MANAGE_CHANNELS])->only('update');
+        $this->middleware(['can:' . Permission::PERMISSION_MANAGE_CHANNELS])->only('destroy');
     }
 
     public function getAllChannelList()
@@ -39,7 +44,7 @@ class ChannelController extends Controller
     {
         $channel = $this->channelRepo->findById($request->id);
         $channel->delete();
-        return \response(['message' => 'channel deleted successfully'] , Response::HTTP_OK);
+        return \response(['message' => 'channel deleted successfully'], Response::HTTP_OK);
 
     }
 }
