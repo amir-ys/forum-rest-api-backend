@@ -10,5 +10,7 @@ route::prefix('v1')->group(function () {
     //Channels
     include __DIR__ . '/v1/channels_routes.php';
 
+    //Threads
+    include __DIR__ . '/v1/threads_routes.php';
 
 });

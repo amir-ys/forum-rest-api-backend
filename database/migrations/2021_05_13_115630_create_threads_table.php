@@ -16,7 +16,7 @@ class CreateThreadsTable extends Migration
         Schema::create('threads', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->string('slug')->unique();
+            $table->string('slug');
             $table->text('content');
             $table->boolean('flag')->default(true);
             $table->foreignId('user_id')->constrained()->onDelete('cascade');

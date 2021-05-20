@@ -6,6 +6,7 @@ use App\Http\Requests\User\LoginRequest;
 use App\Http\Requests\User\RegisterRequest;
 use App\Repositories\UserRepo;
 use App\Http\Controllers\Controller;
+use App\Responses\AjaxResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 
@@ -14,8 +15,7 @@ class AuthController extends Controller
     public function register(RegisterRequest $request)
     {
         (resolve(UserRepo::class))->store($request);
-        return response()->json(['meesage' => 'user created successfully'],
-            \Illuminate\Http\Response::HTTP_CREATED);
+        return AjaxResponse::created(('user created successfully'));
     }
 
     public function login(LoginRequest $request)
@@ -31,11 +31,11 @@ class AuthController extends Controller
     public function logout()
     {
         Auth::logout();
-        return response()->json(['message' => 'logout successfully'], \Illuminate\Http\Response::HTTP_OK);
+        return AjaxResponse::ok(('user created successfully'));
     }
 
     public function user()
     {
-        return response()->json(\auth()->user(), \Illuminate\Http\Response::HTTP_OK);
+        return AjaxResponse::SendData(\auth()->user());
     }
 }

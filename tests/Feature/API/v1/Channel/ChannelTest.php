@@ -26,10 +26,17 @@ class ChannelTest extends TestCase
         $this->postJson(route('channels.store'), [])->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
     }
 
-    public function test_create_new_channel()
+    public function test_permitted_user_can_store_channel()
     {
         $this->actingAsAdmin();
         $this->postJson(route('channels.store'), ['name' => 'laravel'])->assertStatus(Response::HTTP_CREATED);
+    }
+
+    public function test_not_permitted_user_can_not_store_channel()
+    {
+        $this->actingAsUser();
+        $this->postJson(route('channels.store'), ['name' => 'laravel'])
+            ->assertStatus(Response::HTTP_FORBIDDEN);
     }
 
     public function test_channel_updating_should_be_validated()
@@ -39,7 +46,7 @@ class ChannelTest extends TestCase
 
     }
 
-    public function test_update_channel()
+    public function test_permitted_user_can_update_channel()
     {
         $this->actingAsAdmin();
         $channel = Channel::factory()->create(['name' => 'laravel']);
@@ -51,6 +58,18 @@ class ChannelTest extends TestCase
         $this->assertEquals('VueJs', $channel->fresh()->name);
     }
 
+    public function test_not_permitted_user_can_not_update_channel()
+    {
+        $this->actingAsUser();
+        $channel = Channel::factory()->create(['name' => 'laravel']);
+        $this->patchJson(route('channels.update'), [
+            'id' => $channel->id,
+            'name' => 'VueJs'
+        ])->assertStatus(Response::HTTP_FORBIDDEN);
+
+        $this->assertEquals($channel->name, $channel->fresh()->name);
+    }
+
     public function test_channel_deleting_should_be_validated()
     {
         $this->actingAsAdmin();
@@ -59,7 +78,7 @@ class ChannelTest extends TestCase
 
     }
 
-    public function test_delete_channel()
+    public function test_permitted_user_can_delete_channel()
     {
         $this->actingAsAdmin();
         $channel = Channel::factory()->create(['name' => 'laravel']);
@@ -67,6 +86,16 @@ class ChannelTest extends TestCase
             ->assertStatus(Response::HTTP_OK);
         self::assertEquals(0, Channel::all()->count());
     }
+
+    public function test_not_permitted_user_can_not_delete_channel()
+    {
+        $this->actingAsUser();
+        $channel = Channel::factory()->create(['name' => 'laravel']);
+        $this->deleteJson(route('channels.destroy'), ['id' => $channel->id])
+            ->assertStatus(Response::HTTP_FORBIDDEN);
+        self::assertEquals(1, Channel::all()->count());
+    }
+
 
     public function actingAsAdmin()
     {
@@ -76,5 +105,11 @@ class ChannelTest extends TestCase
         auth()->user()->givePermissionTo(Permission::PERMISSION_MANAGE_CHANNELS);
     }
 
+    public function actingAsUser()
+    {
+        $user = User::factory()->create();
+        Sanctum::actingAs($user, ['*']);
+        $this->seed(RolePermissionsTableSeeder::class);
+    }
 
 }
