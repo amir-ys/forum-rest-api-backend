@@ -28,8 +28,10 @@ class ChannelTest extends TestCase
 
     public function test_permitted_user_can_store_channel()
     {
+        $this->withoutExceptionHandling();
         $this->actingAsAdmin();
-        $this->postJson(route('channels.store'), ['name' => 'laravel'])->assertStatus(Response::HTTP_CREATED);
+        $this->postJson(route('channels.store'),
+            ['name' => 'laravel'])->assertStatus(Response::HTTP_CREATED);
     }
 
     public function test_not_permitted_user_can_not_store_channel()

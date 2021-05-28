@@ -2,9 +2,13 @@
 
 namespace App\Providers;
 
+use App\Models\Answer;
+use App\Models\Channel;
 use App\Models\Permission;
 use App\Models\Thread;
 use App\Models\User;
+use App\Policies\AnswerPolicy;
+use App\Policies\ChannelPolicy;
 use App\Policies\ThreadPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
@@ -17,7 +21,9 @@ class AuthServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
+        Channel::class => ChannelPolicy::class,
         Thread::class => ThreadPolicy::class,
+        Answer::class => AnswerPolicy::class,
     ];
 
     /**

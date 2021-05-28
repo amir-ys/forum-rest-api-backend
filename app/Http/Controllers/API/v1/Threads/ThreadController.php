@@ -22,13 +22,13 @@ class ThreadController extends Controller
     public function index()
     {
         $threads = $this->threadRepo->getAvailableThreads();
-        return \response()->json($threads, Response::HTTP_OK);
+        return AjaxResponse::SendData($threads);
     }
 
     public function show($slug)
     {
         $thread = $this->threadRepo->findThreadBySlug($slug);
-        return response()->json($thread, Response::HTTP_OK);
+        return AjaxResponse::SendData($thread);
     }
 
     public function store(ThreadRequest $request)

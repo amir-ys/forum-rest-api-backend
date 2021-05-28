@@ -18,7 +18,6 @@ class ThreadTest extends TestCase
 
     public function test_all_threads_should_be_accessible()
     {
-        $this->withoutExceptionHandling();
         $this->getJson(route('threads.index'))->assertStatus(Response::HTTP_OK);
     }
 
@@ -36,6 +35,7 @@ class ThreadTest extends TestCase
             'content' => 'test thread laravel',
             'channel_id' => $this->createChannel()->id,
         ])->assertStatus(Response::HTTP_CREATED);
+        self::assertEquals(1 , Thread::count());
     }
 
     public function test_thread_creating_should_be_validated()
@@ -98,7 +98,9 @@ class ThreadTest extends TestCase
     {
         $this->actAsUser();
         $thread = $this->createThread();
+        $this->actAsUser();
         $thread->user_id = auth()->id();
+        $thread->save();
         $this->deleteJson(route('threads.destroy', $thread->id))->assertStatus(200);
 
         $this->assertEquals(0, Thread::count());
@@ -106,6 +108,7 @@ class ThreadTest extends TestCase
 
     public function test_user_can_not_delete_other_users_thread()
     {
+        $user2 = $this->actAsUser();
         $thread = $this->createThread();
         $user2 = $this->actAsUser();
         $this->deleteJson(route('threads.destroy', $thread->id))->assertStatus(403);
