@@ -29,6 +29,7 @@ class ThreadTest extends TestCase
 
     public function test_can_create_thread()
     {
+        $this->withoutExceptionHandling();
         $this->actAsUser();
         $this->postJson(route('threads.store'), [
             'title' => 'laravel',

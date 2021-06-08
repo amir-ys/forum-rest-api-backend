@@ -50,6 +50,12 @@ class User extends Authenticatable
 
     public function subscribes()
     {
-       return $this->hasMany(Subscribe::class);
+        return $this->hasMany(Subscribe::class);
+    }
+
+    public function isBlock()
+    {
+        if ($this->is_block) return true;
+        return false;
     }
 }

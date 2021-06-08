@@ -8,9 +8,9 @@ use Illuminate\Http\Response;
 
 class AjaxResponse
 {
-    public static function ok($message)
+    public static function ok($message, $status = \Illuminate\Http\Response::HTTP_OK)
     {
-        return response()->json(['message' => $message], \Illuminate\Http\Response::HTTP_OK);
+        return response()->json(['message' => $message], $status);
     }
 
     public static function SendData($data, $statusCode = \Illuminate\Http\Response::HTTP_OK)

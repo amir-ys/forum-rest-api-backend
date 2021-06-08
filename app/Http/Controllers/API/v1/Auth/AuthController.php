@@ -36,6 +36,10 @@ class AuthController extends Controller
 
     public function user()
     {
-        return AjaxResponse::SendData(\auth()->user());
+        $data = [
+            \auth()->user(),
+            'notifications' => \auth()->user()->unreadNotifications()
+        ];
+        return AjaxResponse::SendData($data, 200);
     }
 }

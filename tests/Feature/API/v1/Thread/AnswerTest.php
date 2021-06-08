@@ -24,6 +24,7 @@ class AnswerTest extends TestCase
 
     public function test_create_new_answers_should_be_validated()
     {
+        $this->actAsUser();
         $response = $this->postJson(route('answers.store'), []);
         $response->assertStatus(422);
         $response->assertJsonValidationErrors(['content', 'thread_id', 'user_id']);
@@ -44,6 +45,7 @@ class AnswerTest extends TestCase
 
     public function test_update_answers_should_be_validated()
     {
+        $this->actAsUser();
         $answer = $this->createAnswer();
         $response = $this->putJson(route('answers.update', $answer->id), []);
         $response->assertStatus(422);
@@ -68,7 +70,6 @@ class AnswerTest extends TestCase
             'content' => 'vuejs',
         ])->assertForbidden();
         $this->assertEquals('laravel', $answer->fresh()->content);
-
     }
 
     public function test_user_can_delete_own_answers()

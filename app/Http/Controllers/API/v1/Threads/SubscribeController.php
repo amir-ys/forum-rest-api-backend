@@ -10,6 +10,11 @@ use App\Responses\AjaxResponse;
 
 class SubscribeController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(['user_block']);
+    }
+
     public function subscribe(Thread $thread)
     {
         auth()->user()->subscribes()->create([
@@ -20,7 +25,7 @@ class SubscribeController extends Controller
 
     public function unSubscribe(Thread $thread)
     {
-        auth()->user()->subscribes()->where('thread_id' , $thread->id)->delete();
+        auth()->user()->subscribes()->where('thread_id', $thread->id)->delete();
         return AjaxResponse::ok('thread unsubscribe successfully');
     }
 

@@ -23,4 +23,10 @@ class UserRepo
         return User::findOrFail($id);
     }
 
+    public function getLeaderBoard()
+    {
+        return User::query()->orderByDesc('score')->paginate(20);
+    }
+
+
 }

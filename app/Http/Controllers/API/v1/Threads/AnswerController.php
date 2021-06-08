@@ -20,7 +20,7 @@ class AnswerController extends Controller
 
     public function __construct(AnswerRepo $answerRepo)
     {
-
+        $this->middleware(['user_block'])->except(['index']);
         $this->answerRepo = $answerRepo;
     }
 
@@ -33,9 +33,15 @@ class AnswerController extends Controller
     public function store(AnswerRequest $request, SubscribeRepo $subscribeRepo, ThreadRepo $threadRepo, UserRepo $userRepo)
     {
         $this->answerRepo->store($request);
+
+        //get list of users which subscribe a thread
         $notifiableUser = $subscribeRepo->getNotifiableUser($request->thread_id);
+
+        //send notification for subscribed users
         Notification::send($userRepo->findById($notifiableUser),
             new  NewReplySubmitted($threadRepo->findById($request->thread_id)));
+
+        // increase user score
         if (($threadRepo->findById($request->thread_id))->user_id !== auth()->id()) {
             auth()->user()->score = auth()->user()->score + 10;
             auth()->user()->save();
