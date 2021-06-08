@@ -92,6 +92,18 @@ class AnswerTest extends TestCase
 
     }
 
+    public function test_user_score_will_increase_when_answer_a_thread()
+    {
+        $this->actAsUser();
+        $thread = $this->createThread();
+        $this->postJson(route('answers.store') ,  [
+            'content' => 'answers for this threads',
+            'thread_id' => $thread->id,
+            'user_id' => auth()->id(),
+        ]);
+        $this->assertEquals(10 , auth()->user()->score);
+    }
+
     private function actAsUser()
     {
         sanctum::actingAs(User::factory()->create());

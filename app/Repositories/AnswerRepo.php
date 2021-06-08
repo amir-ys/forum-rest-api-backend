@@ -21,7 +21,7 @@ class AnswerRepo
 
     public function store($values)
     {
-       return Thread::query()->findOrFail($values->thread_id)->answers()->create([
+        return Thread::query()->findOrFail($values->thread_id)->answers()->create([
                 'content' => $values->content,
                 'user_id' => auth()->id()
             ]
@@ -30,7 +30,7 @@ class AnswerRepo
 
     public function update($values, $id)
     {
-       return $this->findById($id)->update([
+        return $this->findById($id)->update([
             'content' => $values->content
         ]);
     }

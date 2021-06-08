@@ -6,10 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Channel\ChannelRequest;
 use App\Http\Requests\Channel\DeleteChannelRequest;
 use App\Models\Channel;
-use App\Models\Permission;
 use App\Repositories\ChannelRepo;
 use App\Responses\AjaxResponse;
-use Illuminate\Http\Response;
 
 class ChannelController extends Controller
 {
